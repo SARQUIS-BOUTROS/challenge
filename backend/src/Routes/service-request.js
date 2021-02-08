@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const orderRequest = require('../model/order-request');
+const OrderRequest = require('../model/order-request');
 
 /**
  * @swagger
@@ -13,37 +13,75 @@ const orderRequest = require('../model/order-request');
  */
 router.get('/order-request/',
     (req,res, next) => {
-    console.log('hola-wep')
-        res.json(
-            {
-                saludo: "ok las cosas"
-            }
-        )
+
+        const order1 = {
+            id: "1",
+            subject: "subject1",
+            body: "body1",
+            date: new Date()
+        }
+        const order2 = {
+            id:"2",
+            subject: "subject2",
+            body: "body2",
+            date: new Date()
+        }
+
+        const orders = {
+            orders :[order1, order2]
+        }
+
+
+        res
+            .send(
+                orders
+            )
         next();
     }
 )
 
+router.get('/order-request/detail/:id',
+    (req,res,next) => {
+        const order2 = {
+            id:"2",
+            subject: "subject2",
+            body: "body2",
+            date: new Date()
+        }
+
+        res
+            .status(200)
+            .send({
+                order2
+            })
+
+})
+
 router.post('/order-request/',
     async (req,res, next) => {
-        console.log('aca')
-      const or=   new orderRequest ({
-            title: 'Hola',
-            body: 'todo bien'
-        })
+      const orderRequest = {
+        subject: req.body.subject,
+        body: "wep" //req.body.subject,
 
+      }
+      console.log(orderRequest)
+      const or=   new OrderRequest (orderRequest)
+        console.log(or)
         try{
             await or.save();
 
-            res.json(
-                {
-                    saludo: "hola"
-                }
-            )
+            res
+                .status(200)
+                .send(
+                    {orderRequest}
+                )
             next();
 
         }catch (e) {
             console.log(e)
-            res.json({
+            res
+                .status(400)
+                .json({
                 error:'error'
             })
         }

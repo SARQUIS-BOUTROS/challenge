@@ -3,7 +3,7 @@ import {  Route, BrowserRouter, Switch } from 'react-router-dom';
 import MainView from './mainView/mainView';
 import HomeView from './homeView/homeView';
 import CreateView from './createView/createView';
-import orderRequestListView from './orderRequestView/orderRequestView';
+import OrderRequestListView from './orderRequestView/orderRequestView';
 
 
 const getRoutes = function() {
@@ -14,6 +14,7 @@ const getRoutes = function() {
                 <Switch>
                     <Route exact path="/" component={HomeView} />
                     <Route path="/create/" component={CreateView} />
+                    <Route path="/list-view/" component={OrderRequestListView} />
                 </Switch>
             </div>
         </BrowserRouter>

@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 
 const orderRequest = new Schema ({
-    title: String,
+    subject: String,
     body: String
 });
 

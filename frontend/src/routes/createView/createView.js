@@ -1,15 +1,16 @@
 import React, { Component, useState } from 'react';
 import { connect } from 'react-redux';
 import { Form, Button } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css'
-import '../sharedStyles.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../sharedStyles.css';
 
 class CreateView extends Component {
         constructor(props) {
         super(props);
         this.state = {
             subject: 'dsd',
-            body: ''
+            body: '',
+            spin: false
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -26,26 +27,33 @@ class CreateView extends Component {
         }
 
 
-    handleSubmit(event) {
+   async handleSubmit(event) {
 
-            fetch('http://localhost:3001/order-request/',{
+         await  this.setState({
+                spin: true
+            })
+        console.log(this.state.spin)
+         fetch('http://localhost:3001/order-request/',{
                 method: "POST",
                 headers: {
                     "Content-type": "application/json"
                 },
                 body: JSON.stringify({
-                    hola: "hola-wep",
-                    chau: "chau-che"
+                    subject: "hola-wep",
+                    body: "chau-che"
                 })
             })
                 .then(res => {
-                    console.log(res)
+                    return res.json()
                 })
+             .then(res => {
+                 console.log(res.orderRequest)
+             })
                 .catch(err => {
                     console.log(err)
                 })
-        alert('A name was submitted: ' + this.state.subject);
-        event.preventDefault();
+
+       event.preventDefault();
     }
 
 
