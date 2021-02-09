@@ -49,9 +49,12 @@ const swaggerSpec = swaggerJSDoc(options);
 app.use(cors());
 app.use(cookieParser());
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }));
+//app.use(bodyParser.urlencoded({ extended: false })); --before
 // parse application/json
-app.use(bodyParser.json());
+//app.use(bodyParser.json()); --before
+
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 // Put payments router before auth middleware to avoid authentication on B2B communication with MercadoPago
 

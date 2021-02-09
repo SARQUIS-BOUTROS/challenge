@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const OrderRequest = require('../model/order-request');
+let fs = require('fs');
 
 /**
  * @swagger
@@ -12,7 +13,7 @@ const OrderRequest = require('../model/order-request');
  *
  */
 router.get('/order-request/',
-    (req,res, next) => {
+    (req, res, next) => {
 
         const order1 = {
             id: "1",
@@ -21,14 +22,14 @@ router.get('/order-request/',
             date: new Date()
         }
         const order2 = {
-            id:"2",
+            id: "2",
             subject: "subject2",
             body: "body2",
             date: new Date()
         }
 
         const orders = {
-            orders :[order1, order2]
+            orders: [order1, order2]
         }
 
 
@@ -40,10 +41,18 @@ router.get('/order-request/',
     }
 )
 
+router.get('/download/', (req, res, next) => {
+    const file = `${__dirname}/../files/saludo.txt`;
+
+    console.log(file)
+    res.download(file); // Set disposition and send it.
+    next()
+});
+
 router.get('/order-request/detail/:id',
-    (req,res,next) => {
+    (req, res, next) => {
         const order2 = {
-            id:"2",
+            id: "2",
             subject: "subject2",
             body: "body2",
             date: new Date()
@@ -52,41 +61,47 @@ router.get('/order-request/detail/:id',
         res
             .status(200)
             .send({
-                order2
+                order: order2
             })
 
-})
+    })
 
 router.post('/order-request/',
-    async (req,res, next) => {
-      const orderRequest = {
-        subject: req.body.subject,
-        body: "wep" //req.body.subject,
+    (req, res, next) => {
+        const orderRequest = {
+            subject: req.body.subject,
+            body: req.body.body
+        }
 
-      }
-      console.log(orderRequest)
-      const or=   new OrderRequest (orderRequest)
-        console.log(or)
-        try{
-            await or.save();
+        let stringToDecode = req.body.file;
 
+        stringToDecode = stringToDecode.replace(/^data:application\/pdf;base64,/, "");
+        fs.writeFile('result_document.pdf', stringToDecode, 'base64', (error) => {
+            if (error) throw error;
+            console.log("Doc saved!");
+        });
+
+        const or = new OrderRequest(orderRequest)
+        try {
+            or.save();
             res
-                .status(200)
                 .send(
-                    {orderRequest}
+                    {orderRequest: orderRequest}
                 )
-            next();
+                .status(200)
 
-        }catch (e) {
+            next();
+        } catch (e) {
             console.log(e)
             res
                 .status(400)
                 .json({
-                error:'error'
-            })
+                    error: 'error'
+                })
         }
 
     }
 )
+
 
 module.exports = router;
