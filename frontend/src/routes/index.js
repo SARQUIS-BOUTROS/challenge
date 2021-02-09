@@ -4,6 +4,7 @@ import MainView from './mainView/mainView';
 import HomeView from './homeView/homeView';
 import CreateView from './createView/createView';
 import OrderRequestListView from './orderRequestView/orderRequestView';
+import OrderRequestDetailView from './orderRequestDetailView/orderRequestDetailView';
 
 
 const getRoutes = function() {
@@ -15,6 +16,7 @@ const getRoutes = function() {
                     <Route exact path="/" component={HomeView} />
                     <Route path="/create/" component={CreateView} />
                     <Route path="/list-view/" component={OrderRequestListView} />
+                    <Route path="/detail/:id" component={OrderRequestDetailView} />
                 </Switch>
             </div>
         </BrowserRouter>

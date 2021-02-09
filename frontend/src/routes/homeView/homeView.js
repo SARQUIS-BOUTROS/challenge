@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import {Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../sharedStyles.css';
 
 class HomeView extends Component {
     constructor() {
@@ -10,9 +14,10 @@ class HomeView extends Component {
     }
     render() {
         return (
-            <article>
-            Hola
-            </article>
+            <div id="container">
+                <Link to="/list-view"><Button>Orders Requests</Button></Link>
+                <Link to="/create"><Button>New Order Request</Button></Link>
+            </div>
         )
     }
 }
