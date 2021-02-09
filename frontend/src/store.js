@@ -19,6 +19,13 @@ let reducer = (state, action ) => {
         }
     }
 
+    if (action.type === 'SEARCH'){
+        return {
+            ...state,
+            index: action.index
+        }
+    }
+
     return state;
 }
-export default createStore(reducer, {list:[], order:{}});
+export default createStore(reducer, {list:[], order:{}, index:''});

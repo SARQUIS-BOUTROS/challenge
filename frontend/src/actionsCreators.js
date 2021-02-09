@@ -22,7 +22,15 @@ const addToList = order => {
         }
 }
 
+const search = index => {
+    return {
+        type: 'SEARCH',
+        index: index
+    }
+}
+
 export {
     setList,
-    addToList
+    addToList,
+    search
 };

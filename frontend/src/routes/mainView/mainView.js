@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import HeaderView from '../headerView/headerView';
-import './mainView.css'
+import './mainView.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class MainView extends Component {
     constructor(props) {
@@ -10,7 +11,9 @@ class MainView extends Component {
 
     render() {
         return (
-            <HeaderView/>
+            <div>
+                <HeaderView/>
+            </div>
     );
     }
 }

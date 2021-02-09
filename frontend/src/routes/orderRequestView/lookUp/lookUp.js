@@ -1,23 +1,26 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { search } from "../../../actionsCreators";
 import {Button, Navbar, NavDropdown, Nav, Form, FormControl} from 'react-bootstrap';
 
-class NavBarView extends Component {
+class LookUp extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            query: '',
-            nextURL:'/list-list/'
+            search: '',
+            nextURL:'/list-view/'
         };
+        this.handleChange = this.handleChange.bind(this);
     }
 
 
-    handleChange() {
-
-        this.setState({query: this.search.value});
-
-        this.props.history.push(encodeURI(this.state.nextURL + '' + this.state.query));
+    handleChange(evt) {
+        //console.log(evt.target.value)
+        let searchValue = evt.target.value
+        this.props.search(searchValue)
+        //console.log(this.props.history  + this.state.nextURL+''+this.state.search)
+        //this.props.history.push(encodeURI(this.state.nextURL+''+this.state.search));
     }
 
     render() {
@@ -38,7 +41,7 @@ class NavBarView extends Component {
                         </NavDropdown>
                     </Nav>
                     <Form inline>
-                        <FormControl type="text" placeholder="Search" className="mr-sm-2" onChange={this.handleChange}/>
+                        <Form.Control type="text" placeholder="Search" className="mr-sm-2" value={this.props.index} onChange={this.handleChange}/>
                         <Button variant="outline-success">Search</Button>
                     </Form>
                 </Navbar.Collapse>
@@ -49,12 +52,16 @@ class NavBarView extends Component {
 }
 
 function mapStateToProps(state) {
-    return {}
+    return {
+        index: state.index
+    }
 }
 
 function mapDispatchToProps(dispatch) {
 
-    return {}
+    return {
+        search: (index) => dispatch(search(index))
+    }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavBarView);
+export default connect(mapStateToProps, mapDispatchToProps)(LookUp);
