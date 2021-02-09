@@ -4,6 +4,7 @@ import {Form, Button, FormFile} from 'react-bootstrap';
 import toBase64file from './convertToBase64'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../sharedStyles.css';
+import { addToList } from "../../actionsCreators";
 
 class CreateView extends Component {
     constructor(props) {
@@ -41,7 +42,7 @@ class CreateView extends Component {
         console.log(fileToBase64)
         const subject = this.state.subject;
         const body = this.state.body;
-        const orderRequestID = await fetch('http://localhost:3001/order-request/', {
+        await fetch('http://localhost:3001/order-request/', {
             method: "POST",
             headers: {
                 "Content-type": "application/json"
@@ -56,14 +57,14 @@ class CreateView extends Component {
             return res.json()
         })
             .then(res => {
-                console.log(res.orderRequest)
+                this.props.addToList(res.orderRequest)
+
                 return res.orderRequest
             })
             .catch(err => {
                 console.log(err)
             })
-        console.log(orderRequestID)
-        window.location.replace("/");
+        //window.location.replace("/");
 
     }
     render() {
@@ -90,8 +91,9 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-
-    return {}
+    return {
+        addToList: (order) => dispatch(addToList(order)),
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateView);

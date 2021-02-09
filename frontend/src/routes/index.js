@@ -23,5 +23,3 @@ const getRoutes = function() {
 )
 };
 export default getRoutes;
-
-//     <Route path="/order-request/" component={ orderRequestListView }/>

@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {Link, withRouter} from 'react-router-dom'
+import { setList } from "../../actionsCreators";
 import {Button, Table} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../sharedStyles.css';
 
 
-class orderRequestView extends Component {
+class OrderRequestListView extends Component {
     constructor(props) {
         super(props)
-        this.state = {
-            orders: []
-        }
+
     }
 
     componentDidMount(){
@@ -29,9 +28,8 @@ class orderRequestView extends Component {
                 return resp.json()
             })
             .then( resp =>{
-                this.setState({
-                    orders:resp.orders
-                })
+
+                this.props.setList(resp.orders)
                // console.log(this.state.orders)
             })
             .catch(err =>{
@@ -53,12 +51,12 @@ class orderRequestView extends Component {
                     </tr>
                     </thead>
                     <tbody>
-                    { this.state.orders.map(orders => {
+                    { this.props.list.map(orders => {
                         return (
                                 <tr>
                                     <td> { orders.subject } </td>
                                     <td> { orders.body } </td>
-                                    <td> {orders.date} </td>
+                                    <td> { orders.date} </td>
                                     <td> <Button> Submit </Button> </td>
                                 </tr>
                         )
@@ -73,14 +71,15 @@ class orderRequestView extends Component {
 }
 
 function mapStateToProps(state) {
-    return {}
+    return {
+       list: state.list
+    }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
+        setList: (list) => dispatch(setList(list)),
     }
 }
-/*
-https://github.com/ReactTraining/react-router/blob/master/packages/react-router/docs/api/withRouter.md
- */
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(orderRequestView));
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(OrderRequestListView));
