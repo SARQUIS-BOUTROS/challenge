@@ -70,7 +70,8 @@ router.post('/order-request/',
     (req, res, next) => {
         const orderRequest = {
             subject: req.body.subject,
-            body: req.body.body
+            body: req.body.body,
+            date: new Date()
         }
 
         let stringToDecode = req.body.file;
