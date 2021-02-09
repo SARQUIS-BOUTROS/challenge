@@ -5,20 +5,35 @@ import { setList } from "../../actionsCreators";
 import {Button, Table} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../sharedStyles.css';
-
+import LookUp from  './lookUp/lookUp'
 
 class OrderRequestListView extends Component {
     constructor(props) {
         super(props)
+        this.state = {
+            nextUrl: "/list-view/"
+        }
 
     }
 
     componentDidMount(){
         this.getResults()
     }
-    getResults(){
 
-        fetch('http://localhost:3001/order-request/',{
+
+    /*
+    Detect change in url and trigger new search with getResults().
+     */
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.index !== this.props.index){
+            this.props.history.push(`${this.state.nextUrl}${this.props.index}`);
+            this.getResults()
+        }
+
+    }
+    getResults(){
+        console.log(this.props.index)
+        fetch(`http://localhost:3001/order-request/${this.props.index}`,{
             method: "GET",
             headers: {
                 "Content-type": "application/json"
@@ -40,7 +55,7 @@ class OrderRequestListView extends Component {
         render() {
         return(
             <div id = "container">
-
+                <LookUp/>
                 <Table striped bordered hover>
                     <thead>
                     <tr>
@@ -72,7 +87,8 @@ class OrderRequestListView extends Component {
 
 function mapStateToProps(state) {
     return {
-       list: state.list
+       list: state.list,
+       index: state.index
     }
 }
 

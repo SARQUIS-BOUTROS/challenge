@@ -17,7 +17,6 @@ class CreateView extends Component {
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-       // this.toBase64file = this.toBase64file.bind(this);
         document.title = "Create | Orders ";
     }
 
@@ -39,7 +38,6 @@ class CreateView extends Component {
         const file = event.target["exampleFormControlFile1"].files[0]
 
         const fileToBase64 = await toBase64file(file);
-        console.log(fileToBase64)
         const subject = this.state.subject;
         const body = this.state.body;
         await fetch('http://localhost:3001/order-request/', {

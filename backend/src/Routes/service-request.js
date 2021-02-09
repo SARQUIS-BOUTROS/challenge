@@ -12,9 +12,10 @@ let fs = require('fs');
  *             description: ok las cosas
  *
  */
-router.get('/order-request/',
+router.get(['/order-request/',
+        '/order-request/:index'],
     (req, res, next) => {
-
+    console.log(req.params.index)
         const order1 = {
             id: "1",
             subject: "subject1",
