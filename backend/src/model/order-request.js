@@ -5,7 +5,18 @@ const Schema = mongoose.Schema;
 const orderRequest = new Schema ({
     subject: String,
     body: String,
-    date: Date
+    code:
+        {
+            type: String,
+            unique: true
+        },
+    filename: String,
+    date_created: Date,
+    date_updated: Date,
+    rejected: String,
+    ready: String,
 });
+
+
 
 module.exports = mongoose.model('orderrequest', orderRequest)

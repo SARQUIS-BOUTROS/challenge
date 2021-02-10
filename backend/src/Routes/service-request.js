@@ -1,6 +1,8 @@
 const router = require('express').Router();
+const orderNumberGenerator =  require('../functions/orderNumberGenerator/order-number-generator');
 const OrderRequest = require('../model/order-request');
 let fs = require('fs');
+const { body, validationResult } = require('express-validator');
 
 /**
  * @swagger
@@ -43,11 +45,25 @@ router.get(['/order-request/',
 )
 
 router.get('/download/', (req, res, next) => {
-    const file = `${__dirname}/../files/saludo.txt`;
+    const file = `${__dirname}/result_document.pdf`;
+    //http://expressjs.com/en/api.html#res.download
+    res.download(file, 'report.pdf')
 
+/*
     console.log(file)
-    res.download(file); // Set disposition and send it.
+    try {
+        res.download(file);
+    }catch (e) {
+        console.log(e)
+        res
+            .status(400)
+            .json({
+                error:"error"
+            })
+    }
+     // Set disposition and send it.
     next()
+    */
 });
 
 router.get('/order-request/detail/:id',
@@ -66,31 +82,71 @@ router.get('/order-request/detail/:id',
             })
 
     })
+/**
+ * @swagger
+ * /order-request:
+ *   post:
+ *     summary: Add order request
+ *     responses:
+ *         200:
+ *             Order request added
+ *
+ */
 
-router.post('/order-request/',
+
+router.post('/order-request/', [
+    body('subject')
+        .notEmpty()
+        .withMessage(`subject can't not empty`),
+    body('body')
+        .notEmpty()
+        .withMessage(`body can't not empty`)
+],
     (req, res, next) => {
+        const errors = validationResult(req).array();
+
+        if (errors.length > 0) {
+            res
+                .status(400)
+                .json({
+                    error: {
+                        code: 400,
+                        details: errors,
+                        message: 'validation failed'
+                    }
+                });
+            return next();
+        }
+
+        let code = orderNumberGenerator();
         const orderRequest = {
             subject: req.body.subject,
             body: req.body.body,
-            date: new Date()
+            code: code,
+            filename:req.body.filename,
+            date_created: new Date(),
+            date_updated:new Date(),
+            rejected: false,
+            ready: false
         }
 
         let stringToDecode = req.body.file;
 
-        stringToDecode = stringToDecode.replace(/^data:application\/pdf;base64,/, "");
-        fs.writeFile('result_document.pdf', stringToDecode, 'base64', (error) => {
-            if (error) throw error;
-            console.log("Doc saved!");
-        });
-
+        if (req.body.filename != null) {
+            stringToDecode = stringToDecode.replace(/^data:application\/pdf;base64,/, "");
+            fs.writeFile(`${__dirname}/../files/${code}_${req.body.filename}`, stringToDecode, 'base64', (error) => {
+                if (error) throw error;
+                console.log("Doc saved!");
+            });
+        }
         const or = new OrderRequest(orderRequest)
         try {
             or.save();
             res
+                .status(200)
                 .send(
                     {orderRequest: orderRequest}
                 )
-                .status(200)
 
             next();
         } catch (e) {

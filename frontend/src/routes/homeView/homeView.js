@@ -4,6 +4,7 @@ import {Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../sharedStyles.css';
+import { Spinner } from 'react-bootstrap';
 
 class HomeView extends Component {
     constructor() {
@@ -15,6 +16,7 @@ class HomeView extends Component {
     render() {
         return (
             <div id="container">
+                <Spinner animation="border" role="status" aria-hidden="true"/>
                 <Link to="/list-view"><Button>Orders Requests</Button></Link>
                 <Link to="/create"><Button>New Order Request</Button></Link>
             </div>
