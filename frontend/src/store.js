@@ -12,7 +12,6 @@ let reducer = (state, action ) => {
 
         let oldList = state.list
         oldList.push(action.order)
-        console.log(oldList)
         return {
             ...state,
             list : oldList
