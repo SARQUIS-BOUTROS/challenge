@@ -7,7 +7,7 @@ services:
     build:
       context: frontend
     ports:
-      - "500:3000"
+      - "3000:3000"
     links:
       - api
 #    volumes:
@@ -18,7 +18,7 @@ services:
     build:
       context: backend
     ports:
-      - "5001:3001"
+      - "3001:3001"
     links:
       - mongo
 #    volumes:
@@ -26,7 +26,7 @@ services:
   mongo:
     container_name: mongodatabase
     image: mongo
-    ports:
-      - "27017:27017"
+ #   ports:
+ #     - "27018:27017"
     logging:
       driver: none
