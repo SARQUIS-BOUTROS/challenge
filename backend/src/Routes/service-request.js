@@ -2,7 +2,7 @@ const router = require('express').Router();
 const orderNumberGenerator = require('../functions/orderNumberGenerator/order-number-generator');
 const OrderRequest = require('../model/order-request');
 let fs = require('fs');
-const {body, validationResult} = require('express-validator');
+const {body, validationResult, query } = require('express-validator');
 
 /**
  * @swagger
@@ -14,12 +14,27 @@ const {body, validationResult} = require('express-validator');
  *             description: ok las cosas
  *
  */
-router.get(['/order-request/',
-        '/order-request/:index'],
+router.get('/order-request/',
     async (req, res, next) => {
-        console.log(req.params.index)
+        let query = req.query;
+        let status = [];
+        if (req.query.status != ''){
+
+            if (query.status.includes("READY")){
+                status.push("READY")
+            }
+            if (query.status.includes("REJECTED")){
+                status.push("REJECTED")
+            }
+            if (query.status.includes("ONGOING")){
+                status.push("ONGOING")
+            }
+        } else {
+            status = ["READY", "ONGOING", "REJECTED"]
+        }
         try {
-            const or = await OrderRequest.find({},
+            const or = await OrderRequest.find({subject: { $regex: '.*' + query.search + '.*', $options: 'i' } ,
+                    status: { $in: status }},
                 ''
                 , function (err, res) {
                     if (err) {
