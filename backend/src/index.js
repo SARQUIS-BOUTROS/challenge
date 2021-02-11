@@ -2,23 +2,23 @@ const app = require('express')();
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-//require('./database')
+const { URL_ROOT , PORT, DB_NAME} = require('./constants');
 const serviceOrder = require('./Routes/service-request');
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost:27017/orderrequest', {
+mongoose.connect(`mongodb://localhost:27017/${DB_NAME}`, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
     .then(db => console.log('DB is conected to', db.connection.host))
     .catch(err => console(err))
 
-app.listen(3001, () =>
+app.listen(PORT, () =>
     console.log(
-        `¡Aplicación de ejemplo escuchando en el puerto 3001`
+        `¡Aplicación de ejemplo escuchando en el puerto ${PORT}`
     )
 );
 
@@ -30,7 +30,7 @@ const swaggerDefinition = {
     },
     servers: [
         {
-            url: 'http://localhost:3000',
+            url: `${URL_ROOT}`,
             description: 'Development server',
         },
     ]
