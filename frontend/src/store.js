@@ -1,4 +1,6 @@
 import { createStore } from 'redux';
+import { STATUS_ORDER_REQUEST } from './constants.js';
+
 
 let reducer = (state, action ) => {
     if (action.type === 'SET_LIST') {
@@ -26,19 +28,19 @@ let reducer = (state, action ) => {
 
         let filterResume = '';
         if (newOngoingValue) {
-            filterResume += "ONGOING"
+            filterResume +=  STATUS_ORDER_REQUEST.ONGOING
         }else {
-            filterResume.replace("ONGOING",'')
+            filterResume.replace(STATUS_ORDER_REQUEST.ONGOING,'')
         }
         if (newRejectValue) {
-            filterResume += "REJECTED"
+            filterResume +=  STATUS_ORDER_REQUEST.REJECTED
         }else {
-            filterResume.replace("REJECTED",'')
+            filterResume.replace(STATUS_ORDER_REQUEST.REJECTED,'')
         }
         if (newReadyValue) {
-            filterResume += "READY"
+            filterResume += STATUS_ORDER_REQUEST.READY
         }else {
-            filterResume.replace("READY",'')
+            filterResume.replace(STATUS_ORDER_REQUEST.READY,'')
         }
     console.log(filterResume)
         return {

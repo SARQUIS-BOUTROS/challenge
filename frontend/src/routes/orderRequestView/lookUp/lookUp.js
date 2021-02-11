@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {search, setList} from "../../../actionsCreators";
+import {search } from "../../../actionsCreators";
 import { Navbar, Form } from 'react-bootstrap';
-import {stringify} from "qs";
+import { URL_ROOT, STATUS_ORDER_REQUEST } from '../../../constants.js';
 
 class LookUp extends Component {
     constructor(props) {
@@ -23,13 +23,13 @@ class LookUp extends Component {
         let readyValue;
         let searchValue = evt.target.name == "SEARCH"? evt.target.value: this.props.index;
 
-        if (evt.target.name == "ONGOING"){
+        if (evt.target.name == STATUS_ORDER_REQUEST.ONGOING){
             ongoingValue = this.props.ongoing_value == false? true: false;
         }
-        if (evt.target.name == "REJECTED" ){
+        if (evt.target.name ==  STATUS_ORDER_REQUEST.REJECTED ){
             rejectedValue =  this.props.rejected_value == false? true: false;
         }
-        if (evt.target.name == "READY" ){
+        if (evt.target.name == STATUS_ORDER_REQUEST.READY){
             readyValue = this.props.ready_value == false? true: false;
         }
         await this.props.search(searchValue, ongoingValue, rejectedValue,readyValue)
@@ -50,9 +50,9 @@ class LookUp extends Component {
                     <Form>
                         {['checkbox'].map((type) => (
                             <div key={`inline-${type}`} className="mb-3">
-                                <Form.Check inline label="READY" type={type} id={`inline-${type}-1`} name ="READY" onChange={this.handleChange}/>
-                                <Form.Check inline label="REJECTED" type={type} id={`inline-${type}-2`} name ="REJECTED" onChange={this.handleChange}/>
-                                <Form.Check inline label="ONGOING" type={type} id={`inline-${type}-3`} name = "ONGOING" onChange={this.handleChange}/>
+                                <Form.Check inline label={STATUS_ORDER_REQUEST.READY} type={type} id={`inline-${type}-1`} name = { STATUS_ORDER_REQUEST.READY } onChange={this.handleChange}/>
+                                <Form.Check inline label= { STATUS_ORDER_REQUEST.REJECTED } type={type} id={`inline-${type}-2`} name ={ STATUS_ORDER_REQUEST.REJECTED} onChange={this.handleChange}/>
+                                <Form.Check inline label= {STATUS_ORDER_REQUEST.ONGOING} type={type} id={`inline-${type}-3`} name = { STATUS_ORDER_REQUEST.ONGOING } onChange={this.handleChange}/>
                             </div>
                         ))}
                     </Form>
