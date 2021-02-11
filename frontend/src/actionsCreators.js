@@ -25,10 +25,15 @@ const addToList = order => {
         }
 }
 
-const search = index => {
+const search = (index, ongoingValue,rejectValue, readyValue) => {
+
+
     return {
         type: 'SEARCH',
-        index: index
+        index: index,
+        ongoing_value: ongoingValue,
+        reject_value: rejectValue ,
+        ready_value: readyValue
     }
 }
 

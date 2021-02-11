@@ -16,6 +16,7 @@ const getRoutes = function() {
                     <Route exact path="/" component={HomeView} />
                     <Route path="/create/" component={CreateView} />
                     <Route path="/list-view/" component={OrderRequestListView} />
+                    <Route path="/list-view/search=&status=" component={OrderRequestListView} />
                     <Route path="/detail/:id" component={OrderRequestDetailView} />
                 </Switch>
             </div>

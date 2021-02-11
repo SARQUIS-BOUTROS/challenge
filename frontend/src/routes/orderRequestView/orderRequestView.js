@@ -5,7 +5,8 @@ import { setList } from "../../actionsCreators";
 import {Button, Table} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../sharedStyles.css';
-import LookUp from  './lookUp/lookUp'
+import LookUp from  './lookUp/lookUp';
+import {stringify, parse} from 'qs'
 
 class OrderRequestListView extends Component {
     constructor(props) {
@@ -25,15 +26,29 @@ class OrderRequestListView extends Component {
     Detect change in url and trigger new search with getResults().
      */
     componentDidUpdate(prevProps, prevState) {
-        if (prevProps.index !== this.props.index){
-            this.props.history.push(`${this.state.nextUrl}${this.props.index}`);
+
+        console.log(prevProps.index, prevProps.filter_resume)
+
+        if (prevProps.index !== this.props.index || prevProps.filter_resume !== this.props.filter_resume){
+            let query = stringify({
+                search: this.props.index,
+                status:this.props.filter_resume
+            }, { arrayFormat: 'brackets', encode: false })
+
+            this.props.history.push(`${this.state.nextUrl}${query}`);
             this.getResults()
         }
 
+
     }
     getResults(){
-        console.log(this.props.index)
-        fetch(`http://localhost:3001/order-request/${this.props.index}`,{
+        let query = stringify({
+            search: this.props.index,
+            status:this.props.filter_resume
+        }, { arrayFormat: 'brackets', encode: false })
+
+        console.log(query)
+        fetch(`http://localhost:3001/order-request/?${query}`,{
             method: "GET",
             headers: {
                 "Content-type": "application/json"
@@ -43,9 +58,8 @@ class OrderRequestListView extends Component {
                 return resp.json()
             })
             .then( resp =>{
-
                 this.props.setList(resp.order)
-               // console.log(this.state.orders)
+
             })
             .catch(err =>{
                 console.log(err)
@@ -87,7 +101,8 @@ class OrderRequestListView extends Component {
 function mapStateToProps(state) {
     return {
        list: state.list,
-       index: state.index
+       index: state.index,
+       filter_resume: state.filter_resume
     }
 }
 

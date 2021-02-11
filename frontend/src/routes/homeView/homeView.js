@@ -16,7 +16,6 @@ class HomeView extends Component {
     render() {
         return (
             <div id="container">
-                <Spinner animation="border" role="status" aria-hidden="true"/>
                 <Link to="/list-view"><Button>Orders Requests</Button></Link>
                 <Link to="/create"><Button>New Order Request</Button></Link>
             </div>
