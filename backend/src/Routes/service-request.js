@@ -42,7 +42,8 @@ router.get('/order-request/',
                         return err
                     }
                     return res
-                });
+                })
+                .sort({ date_updated: 'desc' });
             res
                 .status(200)
                 .send({
@@ -162,7 +163,7 @@ router.post('/order-request/', [
             filename: req.body.filename,
             date_created: new Date(),
             date_updated: new Date(),
-            status: 'ONGOING'
+            status: STATUS_ORDER_REQUEST.ONGOING
         }
 
         let stringToDecode = req.body.file;
