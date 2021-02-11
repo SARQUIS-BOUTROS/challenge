@@ -15,6 +15,7 @@ const orderRequest = new Schema ({
     date_updated: Date,
     rejected: String,
     ready: String,
+    status: String
 });
 
 
