@@ -10,10 +10,12 @@ const STATUS_ORDER_REQUEST = {
 const PORT = 3001;
 
 const DB_NAME = "orderrequest";
+const DB_CONNECTION = "mongo";
 
 module.exports = {
     URL_ROOT,
     STATUS_ORDER_REQUEST,
     PORT,
-    DB_NAME
+    DB_NAME,
+    DB_CONNECTION
 }

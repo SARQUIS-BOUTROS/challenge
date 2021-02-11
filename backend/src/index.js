@@ -2,14 +2,14 @@ const app = require('express')();
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-const { URL_ROOT , PORT, DB_NAME} = require('./constants');
+const { URL_ROOT , PORT, DB_NAME, DB_CONNECTION} = require('./constants');
 const serviceOrder = require('./Routes/service-request');
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
 const mongoose = require('mongoose');
 
-mongoose.connect(`mongodb://localhost:27017/${DB_NAME}`, {
+mongoose.connect(`mongodb://${DB_CONNECTION}/${DB_NAME}`, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
