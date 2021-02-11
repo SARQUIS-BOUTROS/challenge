@@ -44,7 +44,7 @@ class OrderRequestListView extends Component {
             })
             .then( resp =>{
 
-                this.props.setList(resp.orders)
+                this.props.setList(resp.order)
                // console.log(this.state.orders)
             })
             .catch(err =>{
@@ -59,10 +59,9 @@ class OrderRequestListView extends Component {
                 <Table striped bordered hover>
                     <thead>
                     <tr>
-                        <th>#</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Ver</th>
+                        <th>Subject</th>
+                        <th>Date Created</th>
+                        <th>Code</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -70,9 +69,9 @@ class OrderRequestListView extends Component {
                         return (
                                 <tr>
                                     <td> { orders.subject } </td>
-                                    <td> { orders.body } </td>
-                                    <td> { orders.date} </td>
-                                    <td> <Button> Submit </Button> </td>
+                                    <td> { orders.date_created} </td>
+                                    <td> { orders.code} </td>
+                                    <td> <Link to={ `/detail/${orders.code}` }><Button> Details </Button> </Link></td>
                                 </tr>
                         )
                     })

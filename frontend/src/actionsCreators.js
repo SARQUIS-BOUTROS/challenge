@@ -6,7 +6,10 @@ const setList = items  => {
         orderRequest = {
             subject: i.subject,
             body: i.body,
-            date: i.date
+            code: i.code,
+            date_created: i.date_created,
+            date_updated: i.date_updated,
+            status: i.status
         }
         list.push(orderRequest)
     })
