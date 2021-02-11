@@ -2,7 +2,8 @@ const router = require('express').Router();
 const orderNumberGenerator = require('../functions/orderNumberGenerator/order-number-generator');
 const OrderRequest = require('../model/order-request');
 let fs = require('fs');
-const {body, validationResult, query } = require('express-validator');
+const {body, validationResult } = require('express-validator');
+const { STATUS_ORDER_REQUEST } = require('../constants');
 
 /**
  * @swagger
@@ -20,17 +21,17 @@ router.get('/order-request/',
         let status = [];
         if (req.query.status != ''){
 
-            if (query.status.includes("READY")){
-                status.push("READY")
+            if (query.status.includes(STATUS_ORDER_REQUEST.READY)){
+                status.push( STATUS_ORDER_REQUEST.READY)
             }
-            if (query.status.includes("REJECTED")){
-                status.push("REJECTED")
+            if (query.status.includes(STATUS_ORDER_REQUEST.REJECTED)){
+                status.push(STATUS_ORDER_REQUEST.REJECTED)
             }
-            if (query.status.includes("ONGOING")){
-                status.push("ONGOING")
+            if (query.status.includes(STATUS_ORDER_REQUEST.ONGOING)){
+                status.push(STATUS_ORDER_REQUEST.ONGOING)
             }
         } else {
-            status = ["READY", "ONGOING", "REJECTED"]
+            status = [STATUS_ORDER_REQUEST.READY, STATUS_ORDER_REQUEST.ONGOING, STATUS_ORDER_REQUEST.REJECTED]
         }
         try {
             const or = await OrderRequest.find({subject: { $regex: '.*' + query.search + '.*', $options: 'i' } ,
@@ -59,6 +60,17 @@ router.get('/order-request/',
         }
     }
 )
+
+/**
+ * @swagger
+ * /file/:filename:
+ *   get:
+ *     summary: Get a order request's file
+ *     responses:
+ *         200:
+ *             File returned
+ *
+ */
 
 router.get('/file/:filename', (req, res, next) => {
 
