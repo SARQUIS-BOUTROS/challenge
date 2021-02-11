@@ -4,7 +4,6 @@ import {Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../sharedStyles.css';
-import { Spinner } from 'react-bootstrap';
 
 class HomeView extends Component {
     constructor() {

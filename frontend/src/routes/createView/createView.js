@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Form, Button, Alert, Modal} from 'react-bootstrap';
 import toBase64file from './convertToBase64'
@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../sharedStyles.css';
 import {addToList} from "../../actionsCreators";
 import {Link} from "react-router-dom";
+import {URL_ROOT} from '../../constants.js';
 
 class CreateView extends Component {
     constructor(props) {
@@ -16,7 +17,8 @@ class CreateView extends Component {
             success: false,
             subject: '',
             body: '',
-            code: ''
+            code: '',
+            invalidfile: false
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -40,23 +42,25 @@ class CreateView extends Component {
                 alert: true
             })
         } else {
-            console.log("entrada de form ")
             let file;
             let fileName;
             let fileToBase64;
-            if (event.target["exampleFormControlFile1"].files[0] != undefined) {
-                file = event.target["exampleFormControlFile1"].files[0]
-                console.log(file);
+            file = event.target["exampleFormControlFile1"].files[0]
+
+            if (file != undefined && file.name.indexOf(".pdf") != -1) {
+
+                console.info(file);
                 fileToBase64 = await toBase64file(file);
                 fileName = file.name;
-                console.log(fileName)
+
             } else {
                 file = null;
                 fileName = null;
+
             }
             const subject = this.state.subject;
             const body = this.state.body;
-            await fetch('http://localhost:3001/order-request/', {
+            await fetch(`${URL_ROOT}/order-request/`, {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json"
@@ -68,7 +72,7 @@ class CreateView extends Component {
                     filename: fileName
                 })
             }).then((res) => {
-                console.log("status: ", res.status, res.status in [200, 201])
+
                 if (res.status == 200) {
                     return Promise.resolve(res.json())
                 } else {
@@ -115,9 +119,10 @@ class CreateView extends Component {
                         <Form.Label>Body: </Form.Label>
                         <Form.Control name="body" type="text" value={this.state.body} as="textarea" rows={3}
                                       onChange={this.handleChange}/>
-                        <Form.File id="exampleFormControlFile1" label="File input"/>
+                        <Form.File id="exampleFormControlFile1" label="Select PDF File" type="file"
+                                   accept="application/pdf"/>
                     </Form.Group>
-                    <Button type="submit" value="Submit">Submit</Button>
+                    <Button type="submit" value="Submit">Submit Order Request</Button>
                 </Form>
                 <Modal
                     show={this.state.success}

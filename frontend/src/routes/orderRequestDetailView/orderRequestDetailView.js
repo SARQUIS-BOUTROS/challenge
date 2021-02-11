@@ -4,7 +4,7 @@ import {Link, withRouter} from 'react-router-dom'
 import {Button, ButtonGroup, Form , Badge } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../sharedStyles.css';
-
+import { URL_ROOT, STATUS_ORDER_REQUEST } from '../../constants.js';
 
 class orderRequestView extends Component {
     constructor(props) {
@@ -22,7 +22,7 @@ class orderRequestView extends Component {
     }
     getResults(){
 
-        fetch(`http://localhost:3001/order-request/detail/${this.props.match.params.id}`,{
+        fetch(`${URL_ROOT}/order-request/detail/${this.props.match.params.id}`,{
             method: "GET",
             headers: {
                 "Content-type": "application/json"
@@ -42,7 +42,7 @@ class orderRequestView extends Component {
     }
     handleSubmit(event) {
         if (this.state.order.filename != null) {
-            fetch(`http://localhost:3001/file/${this.state.order.code}_${this.state.order.filename}`,{
+            fetch(`${URL_ROOT}/file/${this.state.order.code}_${this.state.order.filename}`,{
                 method: "GET",
                 headers: {
                     "Content-type": "application/json"
@@ -64,9 +64,8 @@ class orderRequestView extends Component {
             status: change,
             code: this.state.order.code
         })
-        console.log(body)
 
-        fetch('http://localhost:3001/order-request/', {
+        fetch(`${URL_ROOT}/order-request/`, {
             method: "PUT",
             headers: {
                 "Content-type": "application/json"
@@ -85,11 +84,11 @@ class orderRequestView extends Component {
 
     render() {
         let renderButtonsActions = () => {
-            if (this.state.order.status == "ONGOING") {
+            if (this.state.order.status == STATUS_ORDER_REQUEST.ONGOING) {
                 return (
                     <div>
-                        <Button variant="danger" onClick = {this.setStatus} name = "REJECTED" >Mark as Rejected</Button>
-                        <Button variant="success" onClick = {this.setStatus} name = "READY" >Mark as Ready</Button>
+                        <Button variant="danger" onClick = {this.setStatus} name = { STATUS_ORDER_REQUEST.REJECTED}>Mark as Rejected</Button>
+                        <Button variant="success" onClick = {this.setStatus} name = {STATUS_ORDER_REQUEST.READY}>Mark as Ready</Button>
                     </div>
                 )
             } else {
@@ -111,19 +110,19 @@ class orderRequestView extends Component {
             }
         }
         let renderStatus = ()=> {
-            if (this.state.order.status == "ONGOING"){
+            if (this.state.order.status == STATUS_ORDER_REQUEST.ONGOING){
                 return (
                     <Badge pill variant="secondary">
                         ONGOING
                     </Badge>
                 )
-            } else if (this.state.order.status == "REJECTED") {
+            } else if (this.state.order.status == STATUS_ORDER_REQUEST.REJECTED) {
                 return (
                     <Badge pill variant="danger">
                         REJECTED
                     </Badge>
                 )
-            }else if (this.state.order.status == "READY") {
+            }else if (this.state.order.status == STATUS_ORDER_REQUEST.READY) {
                 return (
                 <Badge pill variant="success">
                     READY
@@ -140,7 +139,7 @@ class orderRequestView extends Component {
                         <Form.Label>Code: </Form.Label>
                         <Form.Control type="text" placeholder={ this.state.order.code } readOnly />
                         <Form.Label>Created: </Form.Label>
-                        <Form.Control type="text" placeholder={ this.state.order.date_created } readOnly />
+                        <Form.Control type="text" placeholder={ this.state.order.date_created} readOnly />
                         <Form.Label>Subject: </Form.Label>
                         <Form.Control type="text" placeholder={ this.state.order.subject } readOnly />
                         <Form.Label>Body: </Form.Label>
