@@ -4,6 +4,7 @@ Hello!
 
 This app require
 - Docker version 20.10.3 build 48d30b5
+- Docker Compose version 1.25.0
 - Ports free: 3000 and 3001
 
 After that install Docker
